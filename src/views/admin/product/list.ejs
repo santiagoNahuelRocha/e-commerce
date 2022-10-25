@@ -1,0 +1,79 @@
+<%- include('../template/head'); %>
+<%- include('../template/navAdmin'); %>
+
+<div class="container">
+    <ul class="nav nav-pills d-flex justify-content-center mt-2" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Lista de productos</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Agregar producto</button>
+        </li>
+      </ul>
+    <div class="row">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                <% producto.forEach((producto) => { %>
+                    <table class="col-12 mt-5 table table-hover">
+                        <thead>
+                            <th class="col-1 text-center">ID</th>
+                            <th class="col-3 text-center">Titulo</th>
+                            <th class="col-3 text-center">Precio</th>
+                            <th class="col-3 text-center">IMAGEN</th>
+                            <th class="col-2 text-center">Acción</th>
+                        </thead>
+                        <tbody>
+                            <tr class="table-primary">
+                                <td class="col-1 text-center"><%= producto.id %></td>
+                                <td class="col-3 text-center"><%= producto.titulo %></td>
+                                <td class="col-3 text-center">$<%= producto.precio %></td>
+                                <td class="col-2 text-center"><img src="../../../public/imagen/<%=producto.imagen %>" alt="" width="150px"></td>
+                                <td class="col-3">
+                                    <form action="/admin/edit" method="post">
+                                        <input type="submit" value="Editar" id="edit" name="edit" class="btn btn-success  col-12 mb-2">
+                                        <input type="submit" value="Eliminar" id="delete" name="delete" class="btn btn-danger col-12 mt-2">
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <% }); %>
+            </div>
+            <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                    <div class="d-flex justify-content-center">
+                        <div class="col-4">
+                            <form action="/admin/subir" enctype="multipart/form-data" method="post">
+                                <div class="form-group my-3">
+                                    <input type="text" class="form-control" name="titulo" id="titulo" placeholder="Titulo" >
+                                </div>
+                                <div class="form-group my-3">
+                                    <textarea class="form-control" name="descripcion" id="descripcion" cols="30" rows="10" placeholder="Descripción" ></textarea>
+                                </div>
+                                <div class="form-group my-3">
+                                    <input type="number" class="form-control" name="precio" id="precio" placeholder="Precio"  >
+                                </div>
+                                <div class="form-group my-3">
+                                    <input type="file" class="form-control" name="imagen" id="imagen">
+                                </div>
+                                <button type="submit" class="btn btn-success" id="btn_crear" name="btn_crear" value="Crear">Crear</button>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const triggerTabList = document.querySelectorAll('#myTab button')
+    triggerTabList.forEach(triggerEl => {
+    const tabTrigger = new bootstrap.Tab(triggerEl)
+
+    triggerEl.addEventListener('click', event => {
+        event.preventDefault()
+        tabTrigger.show()
+    })
+})
+</script>
+<%- include('../../template/footer'); %>

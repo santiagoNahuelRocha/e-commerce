@@ -1,0 +1,28 @@
+<!-- <%- include('../template/head'); %>
+<%- include('../template/navAdmin'); %>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-4">
+            <form action="/admin/subir" enctype="multipart/form-data" method="post">
+                <div class="form-group my-3">
+                    <input type="text" class="form-control" name="titulo" id="titulo" placeholder="Titulo" >
+                </div>
+                <div class="form-group my-3">
+                    <textarea class="form-control" name="descripcion" id="descripcion" cols="30" rows="10" placeholder="Descripción" ></textarea>
+                </div>
+                <div class="form-group my-3">
+                    <input type="number" class="form-control" name="precio" id="precio" placeholder="Precio"  >
+                </div>
+                <div class="form-group my-3">
+                    <input type="file" class="form-control" name="imagen" id="imagen">
+                </div>
+                <button type="submit" class="btn btn-success" id="btn_crear" name="btn_crear" value="Crear">Crear</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+
+<%- include('../../template/footer'); %> -->
