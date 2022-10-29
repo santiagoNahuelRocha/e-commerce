@@ -19,7 +19,8 @@ app.use(morgan('dev'));
 
 //rutas
 app.use('/', require('./routes/index.route'));
-app.use('/admin', require('./routes/product.route'));
+app.use('/admin', require('./routes/product.admin.route'));
+app.use('/productos', require('./routes/product.route'));
 
 //public
 app.use('/public', express.static(path.join(__dirname, 'public')));

@@ -1,0 +1,35 @@
+<%- include('../template/head'); %>
+<%- include('../template/nav'); %>
+
+<div class="container">
+    <% producto.forEach((product) => { %>
+    <h1 class="text-center"><%= product.titulo %></h1>
+
+    <div class="col-12 d-flex justify-content-center">
+        <div class="product-img">
+            <img src="../../public/imagen/<%= product.imagen %>">
+        </div>
+
+    </div>
+
+    <div class="col-12 d-flex flex-column mb-5">
+        <p class="card-text">$<%= product.precio %></p>
+        <div class="d-flex">
+            <a href="#" class="btn btn-success w-50">Comprar</a>
+            <a href="" class=" btn btn-info w-50"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <h6>Descripción</h6>
+        <p><%= product.descripcion %></p>
+    </div>
+
+    <div class="col-12">
+        <h6>Calificación</h6>
+    </div>
+    <% }); %>
+</div>
+
+
+<%- include('../template/footer'); %>

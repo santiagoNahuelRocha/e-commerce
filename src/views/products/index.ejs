@@ -1,0 +1,27 @@
+<%- include('../template/head'); %>
+<%- include('../template/nav'); %>
+
+<div class="container">
+    <h1>Pagina Principal</h1>
+    
+    <div class="row">
+    <% products.forEach((products) => { %>
+            <div class="col-4">
+                <div class="card mb-5">
+                    <div class="img">
+                        <img src="../../public/imagen/<%= products.imagen %>">
+                    </div>
+                    <div class="card-body text-center">
+                      <h5 class="card-title"><%= products.titulo %></h5>
+                      <p class="card-text">$<%= products.precio %></p>
+                      <a href="#" class="btn btn-success">Comprar</a>
+                      <a href="/products/<%= products.id %>/view" class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+    </div>
+</div>
+
+
+<%- include('../template/footer'); %>
