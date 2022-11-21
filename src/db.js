@@ -1,10 +1,10 @@
 const mysql = require('mysql');
-
+const {DB_HOST, DB_NAME, DB_PORT, DB_USER} = require('./config')
 const conexion = mysql.createConnection({
-    host: 'localhost',
-    port: 3306,
-    user: 'root',
-    database: 'ecommerce'
+    host: DB_HOST,
+    port: DB_PORT,
+    user: DB_USER,
+    database: DB_NAME
 });
 conexion.connect(function(err){
     if(err){

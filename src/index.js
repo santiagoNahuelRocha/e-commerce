@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const {conexion} =require('./db')
-
+const { Console } = require('console');
 //iniciar
 app = express();
 app.use(express.urlencoded({extended:true}));
@@ -28,4 +28,4 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 //empezar
 app.listen(app.get('puerto'), () =>{
     console.log('El servidor de', app.get('nombre'), 'esta en el puerto', app.get('puerto'));
-  })
+})

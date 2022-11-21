@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
         if (err) {
         throw err;
         } else {
-        res.render("products/index", { products: result }); 
+        res.render("productos/index", { products: result }); 
         }
     });
 });
@@ -22,7 +22,7 @@ router.get('/:id/view', (req, res) => {
             console.log(error)
         }
         else{
-            res.render('products/product', {producto: result});
+            res.render('productos/producto', {producto: result});
         }
     });
 })
