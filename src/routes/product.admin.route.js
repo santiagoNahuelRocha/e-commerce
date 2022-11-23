@@ -1,127 +1,106 @@
 const { Router } = require("express");
 const { conexion } = require("../db");
-const multer  = require('multer')
-const path = require('path')
-const router = Router();
+const multer = require("multer");
+const path = require("path");
+const router = Router()
 
 const storage = multer.diskStorage({
-    destination: path.join(__dirname, '../public/imagen'),
+  destination: path.join(__dirname, "../public/imagen"),
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
 });
-const upload = multer({storage: storage})
-  
-//completado
+const upload = multer({ storage: storage }).single('image');
+
+/* MOSTRAR TODOS LOS PRODUCTOS */
 router.get("/", (req, res) => {
-    conexion.query("SELECT * FROM producto", (err, result) => {
+  var insertData = "SELECT * FROM products JOIN categories WHERE products.id_category = categories.id_category";
+  conexion.query(insertData, (err, resultProduct) => {
+    if (err) {
+      throw err;
+    } else {
+      conexion.query("SELECT * FROM categories", (err, resultCategories) => {
         if (err) {
-        throw err;
-        } else {
-        res.render("admin/producto/lista", { productos: result }); 
+          throw err
         }
-    });
-    
+        else{
+          res.render("admin/producto/lista", { products: resultProduct, categories: resultCategories });
+        }
+      })
+    }
+  });
 });
-//completado
-router.post('/subir', upload.single('imagen'), (req, res) => {
-    
-    console.log(req.file)
-    const imagen = req.file.filename;
-    const tipo = req.file.mimetype;
-    const titulo = req.body.titulo;
-    const descripcion = req.body.descripcion;
-    const precio = req.body.precio;
-    if (!req.file) {
-        console.log("No file upload");
+
+/*CREAR PRODUCTO */
+router.post("/", upload, (req, res) => {
+
+  console.log(req.body.categories)
+  const newProduct = {
+    title: req.body.title,
+    description: req.body.description,
+    price: req.body.price,
+    id_category: req.body.categories,
+    image: req.file.filename,
+    type: req.file.mimetype,
+  };
+  if (!newProduct.title, !newProduct.description, !newProduct.price) {
+    console.log("No body upload");
+  } else {
+    var insertData = "INSERT INTO products set ?";
+    conexion.query(insertData, [newProduct], (err, result) => {
+      if (err) {
+        console.log("file uploaded");
+        console.log(err);
       } else {
-        console.log(req.file)
-      
-        var insertData = "INSERT INTO producto set ?"
-        conexion.query("INSERT INTO producto set ?", [{titulo, descripcion, precio, imagen, tipo}], (err, result) => {
-            if (err){
-            console.log("file uploaded")
-            console.log(err)
-            } 
-            else{
-              console.log(imagen)
-      
-              res.redirect('http://localhost:3030/admin/')
-            }
-        })
+        res.redirect("http://localhost:3030/admin/");
       }
-})
-router.get('/eliminar/:id', (req, res)=>{ 
-  const id = req.params.id;
-  conexion.query("DELETE FROM producto WHERE id = ?", [id]);
-    res.redirect("http://localhost:3030/admin/");
+    });
+  }
 });
+
+/*MOSTRAR VISTA DE EDITAR UN PRODUCTO*/ 
 router.get("/editar/:id", (req, res) => {
   const id = req.params.id;
-  conexion.query("SELECT * FROM producto WHERE id = ?", [id], (err, result) => {
-      if (err) {
+  conexion.query("SELECT * FROM products WHERE id = ?", [id], (err, result) => {
+    if (err) {
       throw err;
-      } else {
-      res.render("admin/producto/editar", { producto: result }); 
-      }
+    } else {
+      res.render("admin/producto/editar", { producto: result });
+    }
   });
-  
 });
-
-router.post('/editar', (req, res)=> { 
-  const id = req.body.id
-  const actualizarProducto = {
-    titulo: req.body.titulo,
-    descripcion: req.body.descripcion,
-    precio: req.body.precio
-  }
-  const titulo = req.body.titulo;
-  const descripcion = req.body.descripcion;
-  const precio = req.body.precio;
-
-  conexion.query("UPDATE producto set ? WHERE id = ? ", [{titulo, descripcion, precio}, id], (err, result) => {
-      if (err){
-      console.log(err)
-      } 
-      else{
-        res.redirect('http://localhost:3030/admin/')
-      }
-  })
-});
-router.get('/editarImagen/:id', (req, res) => {
-  const id = req.params.id;
-  conexion.query("SELECT * FROM producto WHERE id = ?", [id], (err, result) => {
-      if (err) {
-      throw err;
-      } else {
-      res.render("admin/producto/editarImagen", { producto: result }); 
-      }
-  });
-})
-router.post('/editarImagen', upload.single('nuevaImagen'), (req, res) => {
+/*EDITAR PRODUCTO*/
+router.post("/editar", upload, (req, res) => {
   console.log(req.file)
-  console.log('aaaaaaaaaaa')
-  // console.log(req.file)
-  // const imagen = req.file.filename;
-  // const tipo = req.file.mimetype;
-  // const titulo = req.body.titulo;
-  // const descripcion = req.body.descripcion;
-  // const precio = req.body.precio;
-  // if (!req.file) {
-  //     console.log("No file upload");
-  //   } else {
-  //     console.log(req.file)
-    
-  //     var insertData = "INSERT INTO producto set ?"
-  //     conexion.query("INSERT INTO producto set ?", [{titulo, descripcion, precio, imagen, tipo}], (err, result) => {
-  //         if (err){
-  //         console.log("file uploaded")
-  //         console.log(err)
-  //         } 
-  //         else{
-  //           console.log(imagen)
-    
-  //           res.redirect('http://localhost:3030/admin/')
-  //         }
-  //     })
-  //   }
-})
+  const id = req.body.id;
+  const updateProduct = {
+    title: req.body.title,
+    description: req.body.description,
+    price: req.body.price,
+    image: req.file.filename,
+    type: req.file.mimetype
+  };
+  console.log(updateProduct)
+
+  conexion.query(
+    "UPDATE products set ? WHERE id = ? ",
+    [updateProduct, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect("http://localhost:3030/admin/");
+      }
+    }
+  );
+});
+
+/*ELIMINAR PRODUCTO*/ 
+router.get("/eliminar/:id", (req, res) => {
+  const id = req.params.id;
+  conexion.query("DELETE FROM products WHERE id = ?", [id]);
+  res.redirect("http://localhost:3030/admin/");
+});
+
 
 module.exports = router;

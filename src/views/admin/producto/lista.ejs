@@ -7,42 +7,51 @@
                         type="button" role="tab" aria-controls="home" aria-selected="true">Lista de productos</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
-                        type="button" role="tab" aria-controls="profile" aria-selected="false">Agregar producto</button>
+                    <button class="nav-link" id="product-tab" data-bs-toggle="tab" data-bs-target="#product"
+                        type="button" role="tab" aria-controls="product" aria-selected="false">Agregar producto</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="categories-tab" data-bs-toggle="tab" data-bs-target="#categories"
+                        type="button" role="tab" aria-controls="categories" aria-selected="false">Agregar categoria</button>
                 </li>
             </ul>
             <div class="row">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"
                         tabindex="0">
-                        <table id="tabla" class="col-12 mt-5 table table-hover">
+                        <table id="tabla" class=" mt-5 table table-hover">
                             <thead>
                                 <th class="col-1 text-center">ID</th>
-                                <th class="col-3 text-center">Titulo</th>
-                                <th class="col-3 text-center">Precio</th>
+                                <th class="col-2 text-center">Titulo</th>
+                                <th class="col-2 text-center">Precio</th>
                                 <th class="col-3 text-center">IMAGEN</th>
+                                <th class="col-2 text-center">CATEGORIA</th>
                                 <th class="col-2 text-center">Acción</th>
                             </thead>
                             <tbody>
-                                <% productos.forEach((productos)=> { %>
+                                <% products.forEach((product)=> { %>
                                     <tr class="table-primary">
                                         <td class="col-1 text-center">
-                                            <%= productos.id %>
+                                            <%= product.id %>
                                         </td>
-                                        <td class="col-3 text-center">
-                                            <%= productos.titulo %>
+                                        <td class="col-2 text-center">
+                                            <%= product.title %>
                                         </td>
-                                        <td class="col-3 text-center">$<%= productos.precio %>
+                                        <td class="col-2 text-center">
+                                            $<%= product.price %>
                                         </td>
                                         <td class="col-3">
                                             <div class="tabla-imagen">
-                                                <img src="../../../public/imagen/<%=productos.imagen %>" alt="">
-                                                <a href="editarImagen/<%= productos.id %>"><i class="fa-regular fa-pen-to-square"></i></a>
+                                                <img src="../../../public/imagen/<%=product.image %>" alt="">
+                                               
                                             </div>
                                         </td>
+                                        <td class="col-2 text-center">
+                                            <%= product.name%>
+                                        </td>
                                         <td class="col-2">
-                                            <a href="/admin/editar/<%= productos.id%>" class="btn btn-success col-12" ><i class="fa-regular fa-pen-to-square"></i></a>
-                                            <a onclick="confirmar('<%= productos.id %>')" class="btn btn-danger col-12"><i class="fa-regular fa-trash-can"></i></a>
+                                            <a href="/admin/editar/<%= product.id%>" class="btn btn-success col-5" ><i class="fa-regular fa-pen-to-square"></i></a>
+                                            <a onclick="Delete('<%= product.id %>')" class="btn btn-danger col-5"><i class="fa-regular fa-trash-can"></i></a>
                                         </td>
                                     
                                     </tr>
@@ -50,27 +59,53 @@
                                 </tbody>
                             </table>
                         </div>
-                    <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                    <div class="tab-pane fade " id="product" role="tabpanel" aria-labelledby="product-tab" tabindex="0">
                         <div class="d-flex justify-content-center">
-                            <div class="col-4">
-                                <form action="/admin/subir" enctype="multipart/form-data" method="post">
+                            <div class="col-sm-12 col-md-6 col-lg-6">
+                                <form action="/admin" enctype="multipart/form-data" method="post" id="form">
                                     <div class="form-group my-3">
-                                        <input type="text" class="form-control" name="titulo" id="titulo"
-                                            placeholder="Titulo">
+                                        <input type="text" class="form-control" name="title" id="title"
+                                            placeholder="Titulo" required>
                                     </div>
                                     <div class="form-group my-3">
-                                        <textarea class="form-control" name="descripcion" id="descripcion" cols="30"
-                                            rows="10" placeholder="Descripción"></textarea>
+                                        <textarea class="form-control" name="description" id="description" cols="30"
+                                            rows="10" placeholder="Descripción" required></textarea>
                                     </div>
                                     <div class="form-group my-3">
-                                        <input type="number" class="form-control" name="precio" id="precio"
-                                            placeholder="Precio">
+                                        <input type="number" class="form-control" name="price" id="price"
+                                            placeholder="Precio" required>
                                     </div>
                                     <div class="form-group my-3">
-                                        <input type="file" class="form-control" name="imagen" id="imagen">
+                                        <select name="categories" id="" class="form-select" required>
+                                            <option value="" selected> Selectione una Categoria</option>
+                                            <% categories.forEach((categorie)=> { %>
+                                            <option value="<%= categorie.id_category %>" ><%= categorie.name %></option>
+                                            <% }); %>
+                                        </select>
                                     </div>
-                                    <button type="submit" class="btn btn-success" id="btn_crear" name="btn_crear"
-                                        value="Crear">Crear</button>
+                                    <div class="form-group my-3"> 
+                                        <input type="file" class="form-control" name="image" id="image" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Crear</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade " id="categories" role="tabpanel" aria-labelledby="categories-tab" tabindex="0">
+                        <div class="d-flex justify-content-center">
+                            <div class="col-sm-12 col-md-6 col-lg-6">
+                                <form action="/admin/category" method="post">
+                                    <div class="form-group my-3">
+                                        <input type="text" class="form-control" name="category" id="category"
+                                            placeholder="Nombre de la categoria" required>
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <textarea class="form-control" name="description" id="description" cols="30"
+                                            rows="10" placeholder="Descripción" required></textarea>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success">Crear</button>
                                 </form>
 
                             </div>
@@ -89,8 +124,9 @@
             $('#tabla').DataTable();
         } );
     </script>
-
+    
     <script>
+        
         const triggerTabList = document.querySelectorAll('#myTab button')
         triggerTabList.forEach(triggerEl => {
             const tabTrigger = new bootstrap.Tab(triggerEl)
@@ -101,8 +137,7 @@
             })
         })
         
-        function confirmar(id){
-
+        function Delete(id){
             Swal.fire({
                 title:`Estas a punto de eliminar el registro  N°${id}?`,
                 showCancelButton: true,
@@ -114,28 +149,11 @@
                 if (result.isConfirmed) {
                     window.location = '/admin/eliminar/'+id
                 } else if (result.isDenied) {
-                    Swal.fire('Changes are not saved', '', 'info')
+                    Swal.fire('Los cambios no se guardaron', '', 'info')
                 }
             })
         }
-
-        function editarImagen(id){
-        Swal.fire({
-            input: 'file',
-            customClass:  {
-                input: 'form-control'
-            }   
-            
-            
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location = '/admin/editarImagen/'+id
-            } else if (result.isDenied) {
-                Swal.fire('Changes are not saved', '', 'info')
-            }
-        })
-        }
-        
+ 
     </script>
 
 <%- include('../template/cierre') %>

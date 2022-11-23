@@ -1,28 +1,4 @@
-/*----------------------BUSCADOR------------------------------*/
-.navbar-brand{
-    margin-right: 0;
-}
-.navbar a{
-    font-size: 1.5em;
 
-}
-
-.buscador{
-    margin: auto;
-    position: relative;
-}
-.buscador input{
-    border-radius: .5em;
-
-}
-.buscador button{
-    background-color: transparent;
-    border: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translateY(50%);
-}
 .card{
     height: 350px;
     width: 18rem;
@@ -47,7 +23,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100px;
+    height: 50px;
     position: relative;
     color:white;
 }
@@ -55,34 +31,7 @@
     width: 50%;
     height: 100%;
 }
-
-.tabla-imagen a{
-    color: white;
-    opacity: 0;
-    transition: .3s;    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    top:0;
-    left: 0;
-    transform: translateX(50%);
-    cursor: pointer;
-}
-.tabla-imagen:hover  a{
-    opacity: 100;
-    
+textarea{
+    resize: none;
 }
 
-@media screen and (min-width: 992px) {
-    body{
-        /* background-color: #999; */
-
-    }
-    .container-fluid form input, .container-fluid form button{
-        display: none;
-    }
-}
