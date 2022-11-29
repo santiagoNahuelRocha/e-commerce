@@ -1,19 +1,19 @@
 <%- include('../template/head'); %>
-<%- include('../template/nav'); %>
+<%- include('../template/navbar'); %>
 
 <div class="container">
     <% producto.forEach((product) => { %>
-    <h1 class="text-center"><%= product.titulo %></h1>
+    <h1 class="text-center"><%= product.title %></h1>
 
     <div class="col-12 d-flex justify-content-center">
         <div class="product-img">
-            <img src="../../public/imagen/<%= product.imagen %>">
+            <img src="../../public/imagen/<%= product.image %>">
         </div>
 
     </div>
 
     <div class="col-12 d-flex flex-column mb-5">
-        <p class="card-text">$<%= product.precio %></p>
+        <p class="card-text">$<%= product.price %></p>
         <div class="d-flex">
             <a href="#" class="btn btn-success w-50">Comprar</a>
             <a href="" class=" btn btn-info w-50"><i class="fa-solid fa-cart-shopping"></i></a>
@@ -22,7 +22,7 @@
 
     <div class="col-12">
         <h6>Descripción</h6>
-        <p><%= product.descripcion %></p>
+        <p><%= product.description %></p>
     </div>
 
     <div class="col-12">

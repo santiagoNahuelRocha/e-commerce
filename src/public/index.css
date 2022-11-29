@@ -1,4 +1,13 @@
-
+body{
+    min-height: 100vh;
+    /* background-color: red; */
+}
+.cards{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
 .card{
     height: 350px;
     width: 18rem;
@@ -33,5 +42,22 @@
 }
 textarea{
     resize: none;
+}
+.footer{
+    padding: 20px;
+    background: #333;
+    display: flex;
+    justify-content: space-evenly;
+}
+.footer h6{
+    color: white
+}
+.form{
+    display: flex;
+}
+@media screen and (min-width: 992px) {
+    .form{
+        display: none;
+    }
 }
 

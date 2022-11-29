@@ -5,31 +5,30 @@ const session = require('express-session')
 const bcryptjs = require('bcryptjs')
 
 router.get("/", (req, res) => {
-    res.render('index');
+    res.render('index', {user : req.session.username});
 });
 router.get('/register', (req, res) => {
     res.render('profile/registrarse')
 })
 router.post('/', (req, res) => {
     const password = req.body.password
-    bcryptjs.hash(password, 8, (err, newHash) =>{
-        console.log(newHash)
+    bcryptjs.hash(password, 10, (err, newHash) =>{
+        const newUser = {
+        name: req.body.name,
+        username: req.body.username,
+        email: req.body.email,
+        password: newHash
+    }
+        console.log(newUser)
+        conexion.query('INSERT INTO users set ?', [newUser],(err, result) => {
+            if(err){
+                throw err
+            }else{
+                res.send('Usuario registrado correctamente')
+            }
+        })
     })   
-    // console.log(req.body)
-    // const newUser = {
-    //     name: req.body.name,
-    //     username: req.body.username,
-    //     email: req.body.email,
-    //     password: hash
-    // }
-    // var hash = await bcryptjs.hash(newUser.password, 8)
-    // conexion.query('INSERT INTO users set ?', [newUser],(err, result) => {
-    //     if(err){
-    //         throw err
-    //     }else{
-    //         res.redirect('profile/')
-    //     }
-    // })
+
 })
 router.post("/auth", (req, res) => {
     console.log(req.body)
@@ -50,19 +49,18 @@ router.post("/auth", (req, res) => {
             else{
                 res.send('Incorrect Username and/or Password!');
             }
+            res.end()
         })
     }
 
 });
 
 router.get('/profile', (req, res) => {
-    res.render('profile/index', {title: 'express', session: req.session} )
-    // if(req.session.loggedin){
-        
-    // }else{
-
-    // }
-    // res.render('profile/index')
+        res.render('profile/',  {user : req.session.username})
+})
+router.get('/logout', (req, res) => {
+    req.session.destroy()
+    res.redirect('http://localhost:3030/')
 })
 
 module.exports = router;

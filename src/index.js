@@ -4,9 +4,9 @@ const path = require('path');
 const {conexion} = require('./db')
 const session = require('express-session')
 
-const client = require('./routes/index.route');
+const client = require('./routes/user');
 const admin = require('./routes/product.admin.route');
-const products = require('./routes/product.route')
+const products = require('./routes/product')
 const categories = require('./routes/categories');
 //iniciar
 app = express();

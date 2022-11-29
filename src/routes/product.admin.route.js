@@ -40,6 +40,7 @@ router.post("/", upload, (req, res) => {
     description: req.body.description,
     price: req.body.price,
     id_category: req.body.categories,
+    stock: req.body.stock,
     image: req.file.filename,
     type: req.file.mimetype,
   };

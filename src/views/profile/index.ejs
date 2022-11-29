@@ -2,7 +2,13 @@
 <%- include('../template/navbar'); %>
 
 <div class="container">
-    <h1> <%= title %></h1>
+    <% if(user){ %>
+        <h1> <%= user %></h1>
+        <h2>hola</h2>
+    <% }else { %>
+        <h3>tenes que iniciar sesion para ver esta pagina</h3>
+    <% } %>
+   
 </div>
 
 <%- include('../template/footer'); %>
