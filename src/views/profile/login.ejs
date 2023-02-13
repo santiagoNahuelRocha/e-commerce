@@ -1,0 +1,21 @@
+<%- include('../template/head'); %>
+<%- include('../template/navbar'); %>
+
+<div class="container d-flex justify-content-center text-center mt-5">
+    <form action="/auth" class="w-50 p-5" style="border: 1px solid ;" method="post">
+        <div class="form-group my-5">
+            <label for="username" class="form-label">USER</label>
+            <input type="text" class="form-control" name="username" id="username">
+        </div>
+        <div class="form-group my-5">
+            <label for="password" class="form-label">PASSWORD</label>
+            <input type="password" class="form-control" name="password" id="password">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success w-100">Login</button>
+        </div>
+    </form>
+</div>
+
+
+<%- include('../template/footer'); %>

@@ -7,12 +7,14 @@ const bcryptjs = require('bcryptjs')
 router.get("/", (req, res) => {
     res.render('index', {user : req.session.username});
 });
+
+
 router.get('/register', (req, res) => {
-    res.render('profile/registrarse')
+    res.render('profile/registrarse', {user : req.session.username})
 })
 router.post('/', (req, res) => {
     const password = req.body.password
-    bcryptjs.hash(password, 10, (err, newHash) =>{
+    hash = bcryptjs.hash(password, 10, (err, newHash) =>{
         const newUser = {
         name: req.body.name,
         username: req.body.username,
@@ -24,35 +26,42 @@ router.post('/', (req, res) => {
             if(err){
                 throw err
             }else{
-                res.send('Usuario registrado correctamente')
+                req.session.loggedin = true
+                req.session.username = newUser.username
+                res.render('profile/index', {user: req.session.username})
             }
         })
-    })   
+    })
+})
 
+router.get('/login', (req, res) => {
+    res.render('profile/login', {user : req.session.username})
 })
 router.post("/auth", (req, res) => {
-    console.log(req.body)
-    const username= req.body.username
-    const password = req.body.password
-    if (!username && !password || !username || !password) {
-        res.send('Please enter Username and Password')
-    }else{
-        conexion.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (err, result) => {
-            if (err) {
-                throw err
-            }
-            if (result.length > 0 ){
-                req.session.loggedin = true
-                req.session.username = username
-                res.redirect('http://localhost:3030/profile')
-            }
-            else{
-                res.send('Incorrect Username and/or Password!');
-            }
-            res.end()
-        })
-    }
+    const data = req.body
 
+    var query = 'SELECT * FROM users WHERE username = ?';
+    conexion.query(query, [data.username], (err, userData) => {
+        if(userData.length > 0 ){
+            console.log("si")
+            userData.forEach(element => {
+                bcryptjs.compare(data.password, element.password, (err, isMatch) => {
+                    if(!isMatch){
+                        console.log("errorrrr")
+                    }
+                    else{
+                        req.session.loggedin = true
+                        req.session.username = element.username
+                        res.render("profile/index", {user: req.session.username})
+                    }
+                })
+            });
+        }else{
+
+        }
+
+
+    })
 });
 
 router.get('/profile', (req, res) => {

@@ -6,9 +6,10 @@ const router = Router()
 
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../public/imagen"),
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
+  // destination: "images",
+  // filename: (req, file, cb) => {
+  //   cb(null, file.originalname);
+  // },
 });
 const upload = multer({ storage: storage }).single('image');
 
